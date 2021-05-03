@@ -1,0 +1,33 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: make lab1
+      working-directory: ./lab1
+      run: make test
+    - name: make lab2 task1
+      working-directory: ./lab2/2.1
+      run: make test
+    - name: make lab2 task2
+      working-directory: ./lab2/2.2.6
+      run: make test
+    - name: make lab3
+      working-directory: ./lab3
+      run: make test
+    - name: make lab4 task1
+      working-directory: ./lab4/4.1
+      run: make test
+    - name: make lab4 task2
+      working-directory: ./lab4/4.2
+      run: make test
