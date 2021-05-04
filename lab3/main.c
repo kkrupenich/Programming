@@ -69,7 +69,7 @@ void pathFinder(int i, int j, int **labyrinth, int n)
 	}
 }
 
-int way(int n, int **labyrinth)
+int way(int n, int **labyrinth) 
 {
 	int i, j;
 	int path = 0;
