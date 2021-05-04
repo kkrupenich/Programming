@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "main.h"
+#include "main.h" 
 
 void centre(char text[], int sent[])
 {
