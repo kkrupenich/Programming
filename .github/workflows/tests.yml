@@ -31,3 +31,6 @@ jobs:
     - name: make lab5
       working-directory: ./lab5
       run: make test
+    - name: make lab7
+      working-directory: ./lab7
+      run: make test
