@@ -37,5 +37,3 @@ jobs:
         make test
         ./test
         5
-        gcov pawnshop.cpp test.cpp -r
-        bash <(curl -s https://codecov.io/bash)
