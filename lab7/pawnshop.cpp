@@ -1,0 +1,534 @@
+#include "pawnshop.h"
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+void Pawnshop::check(unsigned int *a, ifstream *in)
+{
+    bool useCin = in == nullptr;
+    char inpStr[1024];
+    char buffer = 0;
+    if(useCin)
+    {
+        while(true)
+        {
+            buffer = 0;
+            if((scanf("%1023[^\n]%c",inpStr,&buffer) != 2) || buffer != '\n')
+                getchar();
+            else if((sscanf(inpStr,"%u%c",&*a,&buffer) != 1) || buffer != '\n')
+                printf("Incorrect input. Try again: ");
+            else
+                break;
+        }
+    }
+    else
+        *in >> *a;
+}
+
+void Pawnshop::input()
+{
+    fstream fin;
+    fin.open("people.txt");
+    if(!fin.is_open())
+    {
+        cout << "Cant open file";
+        exit(1);
+    }
+    else
+    {
+        while(!fin.eof())
+        {
+            string firstname, lastname, history;
+            unsigned int passport;
+            fin >> firstname >> lastname >> passport >> history;
+            humanList.push_back({ firstname, lastname, passport, history });
+        }
+    }
+    fin.close();
+    
+    fin.open("items.txt");
+    if(!fin.is_open())
+    {
+        cout << "Cant open file";
+        exit(2);
+    }
+    else
+    {
+        while(!fin.eof())
+        {
+            string itemName;
+            unsigned int humanID;
+            unsigned int assessedMoney, moneyToHuman;
+            fin >> itemName >> humanID >> assessedMoney >> moneyToHuman;
+            itemList.push_back({ itemName, humanID, assessedMoney, moneyToHuman });
+        }
+    }
+}
+
+void Pawnshop::addToItemList(ifstream *in)
+{
+    bool useCin = in == nullptr;
+    string itemName;
+    unsigned int assessedMoney = 0, moneyToHuman = 0;
+
+    if(useCin) cout << "Enter item name: ";
+    (useCin ? cin : *in) >> itemName;
+
+    if(useCin) cout << "Enter assessed money: ";
+    if(useCin) check(&assessedMoney, nullptr);
+    else (*in) >> assessedMoney;
+    while(assessedMoney < 0)
+    {
+        cout << "Incorrect input, try again: ";
+        check(&assessedMoney, nullptr);
+    }
+
+    if(useCin) cout << "Enter moneyToHuman ( < assessed money ): ";
+    if(useCin) check(&moneyToHuman, nullptr);
+    else (*in) >> moneyToHuman;
+    while(moneyToHuman < 0 || moneyToHuman > assessedMoney)
+    {
+        cout << "Incorrect input, try again: ";
+        check(&moneyToHuman, nullptr);
+    }
+
+    itemList.push_back({ itemName, 0, assessedMoney, moneyToHuman });
+}
+
+void Pawnshop::addToHumanList(ifstream *in)
+{
+    bool useCin = in == nullptr;
+
+    string firstname, lastname;
+    unsigned int passport;
+
+    if(useCin) cout << "Enter first and lastname: ";
+    (useCin ? cin : *in) >> firstname >> lastname;
+    if(useCin) cout << "Enter passport data: ";
+    if (useCin) check(&passport, nullptr);
+    else (*in) >> passport;
+    while(passport < 0)
+    {
+        cout << "Incorrect input, try again: ";
+        check(&passport, nullptr);
+    }
+
+    humanList.push_back({ firstname, lastname, passport, "Empty" });
+}
+
+void Pawnshop::changeInfo(ifstream *in)
+{
+    bool useCin = in == nullptr;
+    unsigned int choice;
+    if(useCin) cout << "1 - Items" << endl << "2 - People" << endl << "0 - Exit" << endl << "Enter your choice: ";
+    if(useCin) check(&choice, nullptr);
+    else (*in) >> choice;
+    while(choice < 0 || choice > 2)
+    {
+        cout << "Incorrect input, try again: ";
+        check(&choice, nullptr);
+    }
+    
+    if(choice == 1)
+    {
+        if(useCin)
+            for(unsigned int i = 0; i < itemList.size(); i++)
+                cout << i << " - " << itemList[i].itemName << endl;
+
+        unsigned int index;
+        if(useCin) cout << "Enter which item u want to change: ";
+        if(useCin) check(&index, nullptr);
+        else (*in) >> index;
+        while(index < 0 || index > itemList.size())
+        {
+            cout << "Incorrect input, try again: ";
+            check(&index, nullptr);
+        }
+        
+        if(useCin) cout << "1 - assessed money: " << itemList[index].assessedMoney << endl;
+        if(useCin) cout << "2 - money to human: " << itemList[index].moneyToHuman << endl;
+        if(useCin) cout << "0 - Exit" << endl;
+        if(useCin) cout << "Enter what do u want to change in " << itemList[index].itemName << "?: ";
+        if(useCin) check(&choice, nullptr);
+        else (*in) >> choice;
+        while(choice < 0 || choice > 2)
+        {
+            cout << "Incorrect input, try again: ";
+            check(&choice, nullptr);
+        }
+
+        unsigned int money = 0;
+        switch (choice)
+        {
+        case 1:
+            if(useCin) cout << "Enter new assessed money: ";
+            if(useCin) check(&money, nullptr);
+            else (*in) >> money;
+            while(money < itemList[index].moneyToHuman)
+            {
+                cout << "Incorrect input, try again: ";
+                check(&money, nullptr);
+            }
+            itemList[index].assessedMoney = money;
+            break;
+        case 2:
+            if(useCin) cout << "Enter new money to human: ";
+            if(useCin) check(&money, nullptr);
+            else (*in) >> money;
+            while(money > itemList[index].assessedMoney)
+            {
+                cout << "Incorrect input, try again: ";
+                check(&money, nullptr);
+            }
+            itemList[index].moneyToHuman = money;
+            break;
+        default:
+            break;
+        }
+        return;
+    }
+    else if(choice == 2) 
+    {
+        if(useCin)
+            for(unsigned int i = 0; i < humanList.size(); i++)
+                cout << i << " - " << humanList[i].firstname << " " << humanList[i].lastname << endl;
+
+        unsigned int index;
+        if(useCin) cout << "Enter whome u want to change: ";
+        if(useCin) check(&index, nullptr);
+        else (*in) >> index;
+        while(index < 0 || index > humanList.size())
+        {
+            cout << "Incorrect input, try again: ";
+            check(&index, nullptr);
+        }
+        
+        bool checkHistory = false;
+        if(humanList[index].history != "Empty")
+            checkHistory = true;
+        if(useCin) cout << "You can change only passport data" << endl;
+        if(useCin) cout << "Enter new passport data: ";
+        unsigned int pass;
+        if(useCin) check(&pass, nullptr);
+        else (*in) >> pass;
+        while(pass < 0)
+        {
+            cout << "Incorrect input, try again: ";
+            check(&pass, nullptr);
+        }
+        humanList[index].passport = pass;
+        if(checkHistory)
+        {
+            for(unsigned int i = 0; i < itemList.size(); i++)
+            {
+                if(itemList[i].itemName == humanList[index].history)
+                    itemList[i].humanID = humanList[index].passport;
+            }
+        }
+    }
+    else
+        return;
+}
+
+void Pawnshop::deleteSmth(ifstream *in)
+{
+    bool useCin = in == nullptr;
+
+    unsigned int choice;
+    if(useCin) cout << "1 - Items" << endl << "2 - People" << endl << "Enter your choice: ";
+    if(useCin) check(&choice, nullptr);
+    else (*in) >> choice;
+    while(choice < 0 || choice > 2)
+    {
+        cout << "Incorrect input, try again: ";
+        check(&choice, nullptr);
+    }
+
+    if(choice == 1)
+    {
+        if(useCin)
+            for(unsigned int i = 0; i < itemList.size(); i++)
+                cout << i << " - " << itemList[i].itemName << endl;
+
+        if(useCin) cout << "Choose what u want to delete?: ";
+        if(useCin) check(&choice, nullptr);
+        else (*in) >> choice;
+        while(choice < 0 || choice > itemList.size())
+        {
+            cout << "Incorrect input, try again: ";
+            check(&choice, nullptr);
+        }
+
+        for(unsigned int i = 0; i < humanList.size(); i++)
+        {
+            if(humanList[i].history == itemList[choice].itemName)
+                humanList[i].history = "Empty";
+        }
+
+        auto iter = itemList.cbegin();
+        itemList.erase(iter + choice);
+        itemList.resize(itemList.size() - 1);
+        
+        if(useCin) 
+        {
+            cout << "List after deleting:" << endl;
+            for(unsigned int i = 0; i < itemList.size(); i++)
+                cout << itemList[i].itemName << endl;
+        }
+    }
+    else if(choice == 2)
+    {
+        if(useCin) 
+            for(unsigned int i = 0; i < humanList.size(); i++)
+                cout << i << " - " << humanList[i].firstname << " " << humanList[i].lastname << endl;
+
+        if(useCin) cout << "Choose what u want to delete?: ";
+        if(useCin) check(&choice, nullptr);
+        else (*in) >> choice;
+        while(choice < 0 || choice > humanList.size())
+        {
+            cout << "Incorrect input, try again: ";
+            check(&choice, nullptr);
+        }
+
+        for(unsigned int i = 0; i < itemList.size(); i++)
+        {
+            if(itemList[i].humanID == humanList[choice].passport)
+                itemList[i].humanID = 0;
+        }
+
+        auto iter = humanList.cbegin();
+        humanList.erase(iter + choice);
+        humanList.resize(humanList.size() - 1);
+        
+        if(useCin)
+        {
+            cout << "List after deleting:" << endl;
+            for(unsigned int i = 0; i < humanList.size(); i++)
+                cout << humanList[i].firstname << " " << humanList[i].lastname << endl;
+        }
+    }
+    else
+        return;
+}
+
+void Pawnshop::saveInfo()
+{
+    ofstream fout;
+    fout.open("newItems.txt");
+    if(!fout.good())
+        ofstream out("newItems.txt");
+    for(unsigned int i = 0; i < itemList.size(); i++)
+    {
+        fout << itemList[i].itemName << " " << itemList[i].humanID << " " << itemList[i].assessedMoney << " "
+             << itemList[i].moneyToHuman << " ";
+    }
+    fout.close();
+
+    fout.open("newPeople.txt");
+    if(!fout.good())
+        ofstream out("newPeople.txt");
+    for(unsigned int i = 0; i < humanList.size(); i++)
+    {
+        fout << humanList[i].firstname << " " << humanList[i].lastname << " " << humanList[i].passport
+             << " " << humanList[i].history << " ";
+    }
+    fout.close();
+}
+
+void Pawnshop::showAll()
+{
+    cout << "Item list:" << endl;
+    for(unsigned int i = 0; i < itemList.size(); i++)
+    {
+        cout << i + 1 << " - " << itemList[i].itemName << ", ";
+        if(itemList[i].humanID == 0)
+            cout << "No one" << endl;
+        else
+            cout << itemList[i].humanID << endl;
+    }
+    cout << endl << "People list:" << endl;
+    for(unsigned int i = 0; i < humanList.size(); i++)
+    {
+        cout << i + 1 << " - " << humanList[i].firstname << " " << humanList[i].lastname << ", ";
+        cout << "current item: " << humanList[i].history << endl;
+    }
+}
+
+double profit = 0;
+
+void Pawnshop::takeSmth(ifstream *in)
+{
+    bool checkEmpty = false;
+    for(unsigned int i = 0; i < humanList.size(); i++)
+    {
+        if(humanList[i].history == "Empty")
+        {
+            checkEmpty = true;
+            break;
+        }
+    }
+    if(!checkEmpty)
+    {
+        cout << "There in no one person who can take any item" << endl;
+        return;
+    }
+    checkEmpty = false;
+    for(unsigned int i = 0; i < itemList.size(); i++)
+    {
+
+        if(itemList[i].humanID == 0)
+        {
+            checkEmpty = true;
+            break;
+        }
+    }
+    if(!checkEmpty)
+    {
+        cout << "There is no item that can be taken" << endl;
+        return;
+    }
+    
+    unsigned int humanChoice;
+    for(unsigned int i = 0; i < humanList.size(); i++)
+        cout << i << " - " << humanList[i].firstname << " " << humanList[i].lastname << endl;
+
+    cout << "Choose who will take an item?: ";
+    check(&humanChoice, nullptr);
+    while(humanChoice < 0 || humanChoice > humanList.size() || humanList[humanChoice].history != "Empty")
+    {
+        if(humanList[humanChoice].history != "Empty")
+        {
+            cout << "This one already has an item" << endl;
+            cout << "Choose another one: ";
+            check(&humanChoice, nullptr);
+        }
+        else
+        {
+            cout << "Incorrect input, try again: ";
+            check(&humanChoice, nullptr);
+        }
+    }
+
+    unsigned int itemChoice;
+    for(unsigned int i = 0; i < itemList.size(); i++)
+        cout << i << " - " << itemList[i].itemName << endl;
+
+    cout << "Choose what " << humanList[humanChoice].firstname << " will take?: ";
+    check(&itemChoice, nullptr);
+    while(itemChoice < 0 || itemChoice > itemList.size() || itemList[itemChoice].humanID != 0)
+    {
+        if(itemList[itemChoice].humanID != 0)
+        {
+            cout << "This one already has an item" << endl;
+            cout << "Choose another one: ";
+            check(&itemChoice, nullptr);
+        }
+        else
+        {
+            cout << "Incorrect input, try again: ";
+            check(&itemChoice, nullptr);
+        }
+    }
+
+    itemList[itemChoice].humanID = humanList[humanChoice].passport;
+    humanList[humanChoice].history = itemList[itemChoice].itemName;
+    
+    for(unsigned int i = 0; i < itemList.size(); i++)
+    {
+        if(itemList[i].humanID != 0)
+            profit = profit + itemList[i].assessedMoney - itemList[i].moneyToHuman;
+    }
+    cout << "Current profit of pawnshop is: $" << profit << endl;
+}
+
+void Pawnshop::returnSmth(ifstream *in)
+{
+    bool checkReturn = false;
+    for(unsigned int i = 0; i < itemList.size(); i++)
+    {
+        if(itemList[i].humanID != 0)
+        {
+            checkReturn = true;
+            break;
+        }
+    }
+    if(!checkReturn)
+    {
+        cout << "There in no item that can be returned" << endl;
+        return;
+    }
+    checkReturn = false;
+    for(unsigned int i = 0; i < humanList.size(); i++)
+    {
+        if(humanList[i].history != "Empty")
+        {
+            checkReturn = true;
+            break;
+        }
+    }
+    if(!checkReturn)
+    {
+        cout << "There is no one who can return anything" << endl;
+        return;
+    }
+
+    unsigned int humanChoice;
+    for(unsigned int i = 0; i < humanList.size(); i++)
+        cout << i << " - " << humanList[i].firstname << " " << humanList[i].lastname << endl;
+
+    cout << "Choose who will return any item?: ";
+    check(&humanChoice, nullptr);
+    while(humanChoice < 0 || humanChoice > humanList.size() || humanList[humanChoice].history == "Empty")
+    {
+        if(humanList[humanChoice].history == "Empty")
+        {
+            cout << "This one has nothing" << endl;
+            cout << "Choose another one: ";
+            check(&humanChoice, nullptr);
+        }
+        else
+        {
+            cout << "Incorrect input, try again: ";
+            check(&humanChoice, nullptr);
+        }
+    }
+
+    unsigned int itemChoice;
+    for(unsigned int i = 0; i < itemList.size(); i++)
+        cout << i << " - " << itemList[i].itemName << endl;
+
+    cout << "Choose what " << humanList[humanChoice].firstname << " will return?: ";
+    check(&itemChoice, nullptr);
+    while(itemChoice < 0 || itemChoice > itemList.size() || itemList[itemChoice].humanID == 0)
+    {
+        if(itemList[itemChoice].humanID == 0)
+        {
+            cout << "This one has another item" << endl;
+            cout << "Choose another one: ";
+            check(&itemChoice, nullptr);
+        }
+        else
+        {
+            cout << "Incorrect input, try again: ";
+            check(&itemChoice, nullptr);
+        }
+    }
+
+    itemList[itemChoice].humanID = 0;
+    humanList[humanChoice].history = "Empty";
+}
+
+void Pawnshop::checkPrice()
+{
+    double price = 0;
+    for(unsigned int i = 0; i < itemList.size(); i++)
+    {
+        if(itemList[i].humanID == 0)
+        {
+            price += itemList[i].assessedMoney;
+        }
+    }
+    cout << "Assessed price of all items in pawnshop is: $" << price << endl;
+}
