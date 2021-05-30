@@ -158,7 +158,7 @@ void testCheckPrice()
     file.open("test.txt");
     if(file.is_open())
         file.clear();
-    file << 10 << ' ' << ' ' << 0 << ' ' << 10 << ' ' << 0 << endl << 0 << ' ' << 1 << ' ' << 0 << ' ' << 1;
+    file << ' ' << 0 << ' ' << 0 << endl << 0 << ' ' << 1 << ' ' << 0 << ' ' << 1;
     file.close();
 }
 
@@ -176,7 +176,7 @@ void testTakeSmth()
     ofstream file2("test.txt");
     if(file2.is_open())
         file2.clear();
-    file2 << 10 << ' ' << 2 << ' ' << 1 << ' ' << 10 << ' ' << 2 << ' ' << 1;
+    file2  << 2 << ' ' << 1 << ' ' << 2 << ' ' << 1;
     file2.close();
 }
 
