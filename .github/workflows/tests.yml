@@ -36,7 +36,7 @@ jobs:
       run: |
         make test
         ./test
-        echo "$temp"
+        echo $temp
         gcov pawnshop.cpp test.cpp -r
         bash <(curl -s https://codecov.io/bash)
       env:
