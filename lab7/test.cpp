@@ -67,6 +67,42 @@ void testAddToHumanList()
     ofstream file2("test.txt");
     if(file2.is_open())
         file.clear();
+    file2 << 1 << ' ' << 1 << ' ' << 2 << ' ' << 1200 << endl << 2 << ' ' << 4 << ' ' << 123321 << endl << 0;
+    file.close();
+}
+
+void testChangeInfo()
+{
+    ifstream file("test.txt");
+    if(file.is_open())
+        while(!file.eof())
+            p.changeInfo(&file);
+
+    assert(p.itemList[1].moneyToHuman == 1200);
+    assert(p.humanList[4].passport == 123321);
+    file.close();
+
+    ofstream file2("test.txt");
+    if(file2.is_open())
+        file.clear();
+    file2 << 1 << ' ' << 0 << ' ' << endl << 1 << ' ' << 2 << endl << 2 << ' ' << 1 << endl << 2 << ' ' << 2;
+    file.close();
+}
+
+void testDeleteInfo()
+{
+    ifstream file("test.txt");
+    if(file.is_open())
+        while(!file.eof())
+            p.deleteSmth(&file);
+
+    assert(p.itemList.size() == 4);
+    assert(p.humanList.size() == 4);
+    file.close();
+
+    ofstream file2("test.txt");
+    if(file2.is_open())
+        file.clear();
     file.close();
 }
 
@@ -76,5 +112,7 @@ int main()
     testCheck();
     testAddToItemList();
     testAddToHumanList();
+    testChangeInfo();
+    testDeleteInfo();
     return 0;
 }
