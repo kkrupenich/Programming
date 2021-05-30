@@ -26,7 +26,7 @@ void testCheck()
         while(!file.eof())
         {
             p.check(&a, &file);
-            assert(a < 0 == false);
+            assert((a < 0) == false);
         }
     }
     file.close();
