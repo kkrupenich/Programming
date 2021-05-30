@@ -1,1 +1,0 @@
-Apple 0 1000 800 Orange 0 1212 942 Banana 0 100 80 Kiwi 0 95 21 Aboba 0 9312 6832 Afroamerican 0 3000 10
