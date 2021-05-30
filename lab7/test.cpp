@@ -160,7 +160,7 @@ void testCheckPrice()
     file << 10 << ' ' << 2 << ' ' << 3 << endl << 2 << ' ' << 3 << ' ' << 10 << ' ' << 3 << ' ' << 2;
     file.close();
 }
-/*
+
 void testTakeSmth()
 {
     ifstream file("test.txt");
@@ -178,7 +178,7 @@ void testTakeSmth()
     file2 << 10 << ' ' << 2 << ' ' << 10 << ' ' << 1 << ' ' << 3;
     file2.close();
 }
-
+/*
 void testReturnSmth()
 {
     ifstream file("test.txt");
@@ -238,8 +238,8 @@ int main()
     testDeleteInfo();
     testShowAll();
     testCheckPrice();
-    /*testTakeSmth();
-    testReturnSmth();
+    testTakeSmth();
+    /*testReturnSmth();
     testSaveInfo();*/
     return 0;
 }
