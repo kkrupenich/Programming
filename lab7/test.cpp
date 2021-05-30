@@ -89,7 +89,7 @@ void testChangeInfo()
     file.close();
 }
 
-void testDeleteInfo()
+/*void testDeleteInfo()
 {
     ifstream file("test.txt");
     if(file.is_open())
@@ -104,7 +104,7 @@ void testDeleteInfo()
     if(file2.is_open())
         file.clear();
     file.close();
-}
+}*/
 
 int main()
 {
@@ -113,6 +113,6 @@ int main()
     testAddToItemList();
     testAddToHumanList();
     testChangeInfo();
-    testDeleteInfo();
+    //testDeleteInfo();
     return 0;
 }
