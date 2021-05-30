@@ -107,7 +107,7 @@ void testDeleteInfo()
         file2.clear();
     file2.close();
 }
-
+/*
 void testShowAll()
 {
     ofstream file("test.txt");
@@ -227,7 +227,7 @@ void testSaveInfo()
     }
     file.close();
 }
-
+*/
 int main()
 {
     testInput();
@@ -236,10 +236,10 @@ int main()
     testAddToHumanList();
     testChangeInfo();
     testDeleteInfo();
-    testShowAll();
+    /*testShowAll();
     testCheckPrice();
     testTakeSmth();
     testReturnSmth();
-    testSaveInfo();
+    testSaveInfo();*/
     return 0;
 }
