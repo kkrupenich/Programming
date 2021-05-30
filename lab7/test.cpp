@@ -157,7 +157,7 @@ void testCheckPrice()
     file.open("test.txt");
     if(file.is_open())
         file.clear();
-    file << 2 << ' ' << 3 << endl << 3 << ' ' << 2;
+    file << 0 << ' ' << 0 << endl << 1 << ' ' << 1;
     //file << 10 << ' ' << 2 << ' ' << 3 << endl << 2 << ' ' << 3 << ' ' << 10 << ' ' << 3 << ' ' << 2;
     file.close();
 }
@@ -169,14 +169,14 @@ void testTakeSmth()
         while(!file.eof())
             p.takeSmth(&file);
 
-    assert(p.itemList[3].humanID == 123321);
-    assert(p.humanList[2].history == "Afroamerican");
+    assert(p.itemList[0].humanID == 23451);
+    assert(p.humanList[1].history == "Kiwi");
     file.close();
 
     ofstream file2("test.txt");
     if(file2.is_open())
         file2.clear();
-    file2 << 10 << ' ' << 2 << ' ' << 10 << ' ' << 1 << ' ' << 3;
+    file2 << 1 << ' ' << 1;
     file2.close();
 }
 
@@ -208,7 +208,7 @@ void testSaveInfo()
         file >> temp;
         assert(temp == "Banana");
         file >> temp;
-        assert(temp == "0");
+        assert(temp == "23451");
         while(!file.eof())
             file >> temp;
         assert(temp == "10");
@@ -224,7 +224,7 @@ void testSaveInfo()
         assert(temp == "Winchester");
         while(!file.eof())
             file >> temp;
-        assert(temp == "Aboba");
+        assert(temp == "Empty");
     }
     file.close();
 }
