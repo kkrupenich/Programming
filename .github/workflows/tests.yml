@@ -35,7 +35,6 @@ jobs:
       working-directory: ./lab7
       run: |
         make test
-        ./test
-        integer: 5
+        ./test < test.txt
         gcov pawnshop.cpp test.cpp -r
         bash <(curl -s https://codecov.io/bash)
