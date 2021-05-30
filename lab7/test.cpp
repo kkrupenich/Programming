@@ -86,8 +86,8 @@ void testChangeInfo()
     ofstream file2("test.txt");
     if(file2.is_open())
         file.clear();
-    file2 << 10 << ' ' << 1 << ' ' << 10 << ' ' << 0 << ' ' << ' ' << 10 << ' ' << 1 << ' ' << 10 << ' ' << 2 << ' ' 
-        << 10 << ' ' << 2 << ' ' << 10 << ' ' << 1 << ' ' << 10 << ' ' << 2 << ' ' << 10 << ' ' << 2;
+    file2 << 10 << ' ' << 1 << ' ' << 10 << ' ' << 0 << ' ' << ' ' << 10 << ' ' << 1 << ' ' << 10 << ' ' << 0 << ' ' 
+        << 10 << ' ' << 2 << ' ' << 10 << ' ' << 0 << ' ' << 10 << ' ' << 2 << ' ' << 10 << ' ' << 0;
     file.close();
 }
 
@@ -150,7 +150,7 @@ void testCheckPrice()
         assert(temp == "Assessed");
         while(!file2.eof())
             file2 >> temp;
-        assert(temp == "$13624");
+        assert(temp == "$12507");
     }
     file2.close();
 
@@ -178,7 +178,7 @@ void testTakeSmth()
     file2 << 10 << ' ' << 2 << ' ' << 10 << ' ' << 1 << ' ' << 3;
     file2.close();
 }
-/*
+
 void testReturnSmth()
 {
     ifstream file("test.txt");
@@ -205,7 +205,7 @@ void testSaveInfo()
     {
         string temp;
         file >> temp;
-        assert(temp == "Orange");
+        assert(temp == "Banana");
         file >> temp;
         assert(temp == "0");
         while(!file.eof())
@@ -218,16 +218,16 @@ void testSaveInfo()
     {
         string temp;
         file >> temp;
-        assert(temp == "Kir");
+        assert(temp == "Sam");
         file >> temp;
-        assert(temp == "Kursedov");
+        assert(temp == "Winchester");
         while(!file.eof())
             file >> temp;
         assert(temp == "Aboba");
     }
     file.close();
 }
-*/
+
 int main()
 {
     testInput();
@@ -239,7 +239,7 @@ int main()
     testShowAll();
     testCheckPrice();
     testTakeSmth();
-    /*testReturnSmth();
-    testSaveInfo();*/
+    testReturnSmth();
+    testSaveInfo();
     return 0;
 }
