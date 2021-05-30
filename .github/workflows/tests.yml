@@ -36,6 +36,6 @@ jobs:
       run: |
         make test
         ./test
-        {5}
+        integer: 5
         gcov pawnshop.cpp test.cpp -r
         bash <(curl -s https://codecov.io/bash)
