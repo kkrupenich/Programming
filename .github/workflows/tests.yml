@@ -36,8 +36,6 @@ jobs:
       run: |
         make test
         ./test
-        $temp
+        {5}
         gcov pawnshop.cpp test.cpp -r
         bash <(curl -s https://codecov.io/bash)
-      env:
-        temp: 5
