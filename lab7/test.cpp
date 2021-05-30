@@ -67,7 +67,7 @@ void testAddToHumanList()
     ofstream file2("test.txt");
     if(file2.is_open())
         file.clear();
-    file2 << 1 << ' ' << 1 << ' ' << 2 << ' ' << 1200 << endl << 2 << ' ' << 4 << ' ' << 123321 << endl << 0;
+    file2 << 1 << ' ' << 1 << ' ' << 2 << ' ' << 1200 << endl << 2 << ' ' << 4 << ' ' << 123321;
     file.close();
 }
 
@@ -89,7 +89,7 @@ void testChangeInfo()
     file.close();
 }
 
-/*void testDeleteInfo()
+void testDeleteInfo()
 {
     ifstream file("test.txt");
     if(file.is_open())
@@ -104,7 +104,7 @@ void testChangeInfo()
     if(file2.is_open())
         file.clear();
     file.close();
-}*/
+}
 
 int main()
 {
@@ -113,6 +113,6 @@ int main()
     testAddToItemList();
     testAddToHumanList();
     testChangeInfo();
-    //testDeleteInfo();
+    testDeleteInfo();
     return 0;
 }
