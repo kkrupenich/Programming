@@ -157,7 +157,8 @@ void testCheckPrice()
     file.open("test.txt");
     if(file.is_open())
         file.clear();
-    file << 10 << ' ' << 2 << ' ' << 3 << endl << 2 << ' ' << 3 << ' ' << 10 << ' ' << 3 << ' ' << 2;
+    file << 2 << ' ' << 3 << endl << 3 << ' ' << 2;
+    //file << 10 << ' ' << 2 << ' ' << 3 << endl << 2 << ' ' << 3 << ' ' << 10 << ' ' << 3 << ' ' << 2;
     file.close();
 }
 
