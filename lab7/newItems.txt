@@ -1,4 +1,0 @@
-Orange 0 1212 1200
-Banana 0 100 80
-Aboba 51234 9312 6832
-Afroamerican 0 3000 10
