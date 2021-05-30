@@ -134,7 +134,7 @@ void testShowAll()
         file.clear();
     file.close();
 }
-/*
+
 void testCheckPrice()
 {
     ofstream file("test.txt");
@@ -160,7 +160,7 @@ void testCheckPrice()
     file << 10 << ' ' << 2 << ' ' << 3 << endl << 2 << ' ' << 3 << ' ' << 10 << ' ' << 3 << ' ' << 2;
     file.close();
 }
-
+/*
 void testTakeSmth()
 {
     ifstream file("test.txt");
@@ -237,8 +237,8 @@ int main()
     testChangeInfo();
     testDeleteInfo();
     testShowAll();
-    /*testCheckPrice();
-    testTakeSmth();
+    testCheckPrice();
+    /*testTakeSmth();
     testReturnSmth();
     testSaveInfo();*/
     return 0;
